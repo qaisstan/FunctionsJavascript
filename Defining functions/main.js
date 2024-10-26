@@ -32,7 +32,7 @@ const ConvertTolit = new Function("gallon", "return gallon * 3.785;");
 // conditions: call its self and must has a stop condition
 
 // IIFE
-// you can use any function to create this.
+// you can use any function to create this
 (function printDate() {
   let date = new Date().toLocaleDateString();
   console.log(date);
