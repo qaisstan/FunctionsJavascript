@@ -26,8 +26,17 @@ const createFlightEntry = (flight, from, status, ...args) => {
   parent.appendChild(row);
 };
 
-const getFlights = () => {
-  return fetch("flight-summary.json");
+const getFlights = async () => {
+  const res = await fetch("flight-summary.json");
+  const flights = await res.json();
+  for (let flightSummary of flights) {
+    const flightDetails = await getFlightDetails(flightSummary.flight);
+    createFlightEntry(
+      flightSummary.flight,
+      flightSummary.from,
+      flightDetails.status
+    );
+  }
 };
 
 getFlights()
@@ -40,11 +49,10 @@ getFlights()
     });
   });
 
-  
-const getFlightDetails = (flightNumber) => {
-  return fetch("flight-details.json")
-    .then((res) => res.json())
-    .then((data) => data.find((f) => f.flight === flightNumber));
+const getFlightDetails = async (flightNumber) => {
+  const res = await fetch("flight-detail.json");
+  const detailedFlights = await res.json();
+  return detailedFlights.find((f) => f.flight === flightNumber);
 };
 
 const displayTime = () => {
